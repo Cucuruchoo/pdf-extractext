@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from bson import ObjectId
 from bson.errors import InvalidId
 from motor.motor_asyncio import AsyncIOMotorDatabase
+from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
 
 from app.domain.document import Document
@@ -69,6 +70,41 @@ class MongoDocumentRepository:
             documents.append(self._to_document(document_data))
 
         return documents
+
+    async def update(
+        self,
+        document_id: str | None,
+        filename: str | None = None,
+        content_text: str | None = None,
+    ) -> Document | None:
+        object_id = self._to_object_id(document_id)
+
+        if object_id is None:
+            return None
+
+        update_data = {}
+
+        if filename is not None:
+            update_data["filename"] = filename
+
+        if content_text is not None:
+            update_data["content_text"] = content_text
+
+        if not update_data:
+            return await self.find_by_id(document_id)
+
+        update_data["updated_at"] = datetime.now(UTC)
+
+        document_data = await self.collection.find_one_and_update(
+            {"_id": object_id},
+            {"$set": update_data},
+            return_document=ReturnDocument.AFTER,
+        )
+
+        if document_data is None:
+            return None
+
+        return self._to_document(document_data)
 
     async def delete(self, document_id: str | None) -> bool:
         object_id = self._to_object_id(document_id)

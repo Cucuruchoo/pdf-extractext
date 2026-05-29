@@ -44,5 +44,17 @@ class DocumentService:
     async def list_documents(self) -> list[Document]:
         return await self.repository.list_all()
 
+    async def update_document(
+        self,
+        document_id: str,
+        filename: str | None = None,
+        content_text: str | None = None,
+    ) -> Document | None:
+        return await self.repository.update(
+            document_id=document_id,
+            filename=filename,
+            content_text=content_text,
+        )
+
     async def delete_document(self, document_id: str) -> bool:
         return await self.repository.delete(document_id)
