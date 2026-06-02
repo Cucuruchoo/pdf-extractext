@@ -1,11 +1,30 @@
 services:
+  app:
+    build: .
+    container_name: pdf-documents-api
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+      MONGO_DB_NAME: pdf_documents
+      MAX_PDF_SIZE_MB: 10
+      LOG_LEVEL: INFO
+    depends_on:
+      mongo:
+        condition: service_healthy
+
   mongo:
-    image: mongo:7
+    image: mongo:4.4
     container_name: mongo-pdf-api
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mongo_data:
