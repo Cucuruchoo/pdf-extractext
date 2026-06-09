@@ -1,14 +1,18 @@
 services:
   app:
     build: .
+    image: pdf-extractext-api:1.0.0
     container_name: pdf-documents-api
     ports:
       - "8000:8000"
     environment:
+      APP_VERSION: "1.0.0"
       MONGO_URI: mongodb://mongo:27017
       MONGO_DB_NAME: pdf_documents
       MAX_PDF_SIZE_MB: 10
       LOG_LEVEL: INFO
+      SUMMARY_PROVIDER: local
+      ENABLE_TEXT_SUMMARY: "true"
     depends_on:
       - mongo
 
