@@ -1,11 +1,12 @@
 [project]
 name = "pdf-documents-api"
-version = "0.1.0"
+version = "1.0.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.136.3",
+    "httpx>=0.28.1",
     "motor>=3.7.1",
     "pymongo>=4.17.0",
     "pypdf>=6.12.2",
