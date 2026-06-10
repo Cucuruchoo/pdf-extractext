@@ -13,6 +13,7 @@ services:
       LOG_LEVEL: INFO
       SUMMARY_PROVIDER: local
       ENABLE_TEXT_SUMMARY: "true"
+      TZ: America/Argentina/Buenos_Aires
     depends_on:
       - mongo
 
@@ -23,6 +24,8 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    environment:
+      TZ: America/Argentina/Buenos_Aires
 
 volumes:
   mongo_data:
