@@ -1,0 +1,33 @@
+name: pdf-extractext
+
+services:
+  app:
+    image: "${APP_IMAGE}:${APP_VERSION}"
+    container_name: pdf-documents-api
+    ports:
+      - "${APP_PORT}:8000"
+    environment:
+      APP_VERSION: "${APP_VERSION}"
+      MONGO_URI: "mongodb://mongo:27017"
+      MONGO_DB_NAME: "${MONGO_DB_NAME}"
+      MAX_PDF_SIZE_MB: "${MAX_PDF_SIZE_MB}"
+      LOG_LEVEL: "${LOG_LEVEL}"
+      SUMMARY_PROVIDER: "${SUMMARY_PROVIDER}"
+      ENABLE_TEXT_SUMMARY: "${ENABLE_TEXT_SUMMARY}"
+      TZ: "${TZ}"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: "${MONGO_IMAGE}"
+    container_name: mongo-pdf-api
+    ports:
+      - "${MONGO_PORT}:27017"
+    environment:
+      TZ: "${TZ}"
+    volumes:
+      - type: bind
+        source: "${MONGO_DATA_PATH}"
+        target: /data/db
+    restart: unless-stopped
