@@ -1,0 +1,13 @@
+services:
+  mongo:
+    image: "${MONGO_IMAGE}"
+    container_name: mongo-pdf-api
+    ports:
+      - "${MONGO_PORT}:27017"
+    environment:
+      TZ: "${TZ}"
+    volumes:
+    - type: bind
+      source: "${MONGO_DATA_PATH}"
+      target: /data/db
+    restart: unless-stopped
