@@ -23,7 +23,6 @@ Ambos tableros reflejan la evolución de **una sola etapa académica**, no entre
 
 - Santiago Viñolo
 - Renata Michaux
-- Gaston Fernandez
 
 ## Tecnologías
 
